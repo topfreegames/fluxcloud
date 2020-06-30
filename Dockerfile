@@ -1,4 +1,4 @@
-FROM golang:1.12 as builder
+FROM golang:1.14 as builder
 WORKDIR /app
 COPY . .
 RUN GO111MODULE=on GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o ./fluxcloud ./cmd/
