@@ -17,7 +17,7 @@ require (
 	github.com/pkg/term v0.0.0-20200520122047-c3ffed290a03 // indirect
 	github.com/ryanuber/go-glob v1.0.0 // indirect
 	github.com/stretchr/testify v1.5.1
-	github.com/fluxcd/flux v1.19.0
+	github.com/weaveworks/flux v0.0.0-20190411145155-fea56bc3feee
 	github.com/zorkian/go-datadog-api v2.29.0+incompatible
 	go.opencensus.io v0.22.4
 	golang.org/x/time v0.0.0-20200416051211-89c76fbcd5d1 // indirect
