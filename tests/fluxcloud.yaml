@@ -35,7 +35,7 @@ spec:
         - containerPort: 3032
         env:
         - name: SLACK_URL
-          value: "https://hooks.slack.com/services/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"
+          value: "https://my.webhook.slack"
         - name: SLACK_CHANNEL
           value: "#kubernetes"
         - name: SLACK_USERNAME
