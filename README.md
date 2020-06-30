@@ -1,4 +1,4 @@
-Fluxcloud is a tool to receive events from the [Weave flux](https://github.com/weaveworks/flux).
+Fluxcloud is a tool to receive events from the [Weave flux](https://github.com/fluxcd/flux).
 
 ![build status](https://ci.codesink.net/api/badges/justinbarrick/fluxcloud/status.svg)
 
@@ -9,7 +9,7 @@ webhook without using Weave Cloud.
 
 # Setup
 
-Please see the [Weave Flux setup documentation](https://github.com/weaveworks/flux/blob/master/site/standalone/installing.md) for setting up Flux.
+Please see the [Weave Flux setup documentation](https://github.com/fluxcd/flux/blob/master/site/standalone/installing.md) for setting up Flux.
 
 To use Fluxcloud, you can deploy fluxcloud as either a sidecar to Flux or a seperate deployment.
 
