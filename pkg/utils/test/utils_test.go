@@ -1,9 +1,10 @@
 package test_utils
 
 import (
-	"github.com/stretchr/testify/assert"
-	fluxevent "github.com/weaveworks/flux/event"
 	"testing"
+
+	fluxevent "github.com/fluxcd/flux/pkg/event"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestParseFluxEventSync(t *testing.T) {

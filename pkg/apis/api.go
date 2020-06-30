@@ -5,10 +5,10 @@ import (
 	"os"
 	"time"
 
+	"contrib.go.opencensus.io/exporter/jaeger"
 	"github.com/topfreegames/fluxcloud/pkg/config"
 	"github.com/topfreegames/fluxcloud/pkg/exporters"
 	"github.com/topfreegames/fluxcloud/pkg/formatters"
-	"go.opencensus.io/exporter/jaeger"
 	"go.opencensus.io/plugin/ochttp"
 	"go.opencensus.io/trace"
 )

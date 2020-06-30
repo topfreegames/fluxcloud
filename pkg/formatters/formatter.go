@@ -1,9 +1,9 @@
 package formatters
 
 import (
+	fluxevent "github.com/fluxcd/flux/pkg/event"
 	"github.com/topfreegames/fluxcloud/pkg/exporters"
 	"github.com/topfreegames/fluxcloud/pkg/msg"
-	fluxevent "github.com/weaveworks/flux/event"
 )
 
 // Formats a flux event for an exporter

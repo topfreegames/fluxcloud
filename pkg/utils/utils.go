@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"io"
 
-	fluxevent "github.com/weaveworks/flux/event"
+	fluxevent "github.com/fluxcd/flux/pkg/event"
 )
 
 // Parse a flux event from Json into a flux Event struct.
