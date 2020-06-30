@@ -60,7 +60,7 @@ func (d *Datadog) NewDatadogEvent(message msg.Message) []DatadogEvent {
 				tags = append(tags, tag)
 			}
 		}
-		events = append(events, DatadogEvent{message.Title, message.Body, tags, "API"})
+		events = append(events, DatadogEvent{Title: message.Title, Text: message.Body, Tags: tags, SourceType: "API"})
 	}
 	return events
 }

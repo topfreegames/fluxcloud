@@ -116,6 +116,8 @@ func TestDatadogSend(t *testing.T) {
 		fmt.Println(DatadogMessage)
 	}))
 	defer ts.Close()
+	// Add api data source
+	DatadogMessage.SourceType = "API"
 	testDatadog.datadogClient.SetBaseUrl(ts.URL)
 
 	err := testDatadog.Send(context.TODO(), &http.Client{}, message)
