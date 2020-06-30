@@ -7,11 +7,11 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	test_utils "github.com/justinbarrick/fluxcloud/pkg/utils/test"
 	"github.com/stretchr/testify/assert"
 	"github.com/topfreegames/fluxcloud/pkg/config"
 	"github.com/topfreegames/fluxcloud/pkg/exporters"
 	"github.com/topfreegames/fluxcloud/pkg/formatters"
+	test_utils "github.com/topfreegames/fluxcloud/pkg/utils/test"
 )
 
 func TestHandleV6(t *testing.T) {

@@ -8,9 +8,9 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	test_utils "github.com/justinbarrick/fluxcloud/pkg/utils/test"
 	"github.com/stretchr/testify/require"
 	"github.com/topfreegames/fluxcloud/pkg/msg"
+	test_utils "github.com/topfreegames/fluxcloud/pkg/utils/test"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/topfreegames/fluxcloud/pkg/config"
