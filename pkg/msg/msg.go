@@ -1,7 +1,7 @@
 package msg
 
 import (
-	fluxevent "github.com/weaveworks/flux/event"
+	fluxevent "github.com/fluxcd/flux/pkg/event"
 )
 
 // Represents a Flux event that will get sent to an exporter

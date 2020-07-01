@@ -1,4 +1,4 @@
-Fluxcloud is a tool to receive events from the [Weave flux](https://github.com/weaveworks/flux).
+Fluxcloud is a tool to receive events from the [Weave flux](https://github.com/fluxcd/flux).
 
 ![build status](https://ci.codesink.net/api/badges/justinbarrick/fluxcloud/status.svg)
 
@@ -9,7 +9,7 @@ webhook without using Weave Cloud.
 
 # Setup
 
-Please see the [Weave Flux setup documentation](https://github.com/weaveworks/flux/blob/master/site/standalone/installing.md) for setting up Flux.
+Please see the [Weave Flux setup documentation](https://github.com/fluxcd/flux/blob/master/site/standalone/installing.md) for setting up Flux.
 
 To use Fluxcloud, you can deploy fluxcloud as either a sidecar to Flux or a seperate deployment.
 
@@ -45,7 +45,7 @@ Set the `--connect` flag on Flux to `--connect=ws://fluxcloud`.
 # Exporters
 
 There are multiple exporters that you can use with fluxcloud. If there is not a suitable
-one already, feel free to contribute one by implementing the [exporter interface](https://github.com/justinbarrick/fluxcloud/blob/master/pkg/exporters/exporter.go)!
+one already, feel free to contribute one by implementing the [exporter interface](https://github.com/topfreegames/fluxcloud/blob/master/pkg/exporters/exporter.go)!
 
 ## Slack
 
@@ -82,7 +82,7 @@ You can also add additional tags to the event by setting `DATADOG_ADDITIONAL_TAG
 Events can be sent to an arbitrary webhook by setting the `EXPORTER_TYPE` to "webhook" and
 then setting the `WEBHOOK_URL` to the URL to send the webhook to.
 
-Fluxcloud will send a POST request to the provided URL with [the encoded event](https://github.com/justinbarrick/fluxcloud/blob/master/pkg/msg/msg.go) as the payload.
+Fluxcloud will send a POST request to the provided URL with [the encoded event](https://github.com/topfreegames/fluxcloud/blob/master/pkg/msg/msg.go) as the payload.
 
 # Formatting commit links
 
@@ -138,7 +138,7 @@ To build fluxcloud, you can either use go:
 go build -o fluxcloud ./cmd/
 ```
 
-Or, to run a full CI build, download [hone](https://github.com/justinbarrick/hone):
+Or, to run a full CI build, download [hone](https://github.com/topfreegames/hone):
 
 ```
 hone

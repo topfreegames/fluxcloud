@@ -2,8 +2,9 @@ package test_utils
 
 import (
 	"bytes"
-	"github.com/justinbarrick/fluxcloud/pkg/utils"
-	fluxevent "github.com/weaveworks/flux/event"
+
+	fluxevent "github.com/fluxcd/flux/pkg/event"
+	"github.com/topfreegames/fluxcloud/pkg/utils"
 )
 
 func NewFluxSyncEvent() fluxevent.Event {

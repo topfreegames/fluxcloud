@@ -3,11 +3,11 @@ package formatters
 import (
 	"testing"
 
-	"github.com/justinbarrick/fluxcloud/pkg/config"
-	"github.com/justinbarrick/fluxcloud/pkg/exporters"
-	"github.com/justinbarrick/fluxcloud/pkg/utils/test"
+	fluxevent "github.com/fluxcd/flux/pkg/event"
 	"github.com/stretchr/testify/assert"
-	fluxevent "github.com/weaveworks/flux/event"
+	"github.com/topfreegames/fluxcloud/pkg/config"
+	"github.com/topfreegames/fluxcloud/pkg/exporters"
+	test_utils "github.com/topfreegames/fluxcloud/pkg/utils/test"
 )
 
 func TestNewDefaultFormatter(t *testing.T) {

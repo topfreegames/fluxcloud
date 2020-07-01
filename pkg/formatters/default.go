@@ -7,12 +7,12 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/justinbarrick/fluxcloud/pkg/config"
-	"github.com/justinbarrick/fluxcloud/pkg/exporters"
-	"github.com/justinbarrick/fluxcloud/pkg/msg"
-	"github.com/weaveworks/flux"
-	fluxevent "github.com/weaveworks/flux/event"
-	"github.com/weaveworks/flux/update"
+	fluxevent "github.com/fluxcd/flux/pkg/event"
+	"github.com/fluxcd/flux/pkg/resource"
+	"github.com/fluxcd/flux/pkg/update"
+	"github.com/topfreegames/fluxcloud/pkg/config"
+	"github.com/topfreegames/fluxcloud/pkg/exporters"
+	"github.com/topfreegames/fluxcloud/pkg/msg"
 )
 
 const (
@@ -49,7 +49,7 @@ type DefaultFormatter struct {
 type tplValues struct {
 	VCSLink            string
 	EventID            fluxevent.EventID
-	EventServiceIDs    []flux.ResourceID
+	EventServiceIDs    []resource.ID
 	EventChangedImages []string
 	EventResult        update.Result
 	EventType          string

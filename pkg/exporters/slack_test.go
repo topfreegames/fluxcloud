@@ -8,12 +8,11 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/weaveworks/flux"
-
-	"github.com/justinbarrick/fluxcloud/pkg/config"
-	"github.com/justinbarrick/fluxcloud/pkg/msg"
+	fluxevent "github.com/fluxcd/flux/pkg/event"
+	"github.com/fluxcd/flux/pkg/resource"
 	"github.com/stretchr/testify/assert"
-	fluxevent "github.com/weaveworks/flux/event"
+	"github.com/topfreegames/fluxcloud/pkg/config"
+	"github.com/topfreegames/fluxcloud/pkg/msg"
 )
 
 var testSlack = Slack{
@@ -98,14 +97,14 @@ func TestSlackFormatLink(t *testing.T) {
 }
 
 func TestNewSlackMessage(t *testing.T) {
-	defaultResourceID, _ := flux.ParseResourceID("default:resource/name")
-	nsResourceID, _ := flux.ParseResourceID("namespace:resource/name")
+	defaultResourceID, _ := resource.ParseID("default:resource/name")
+	nsResourceID, _ := resource.ParseID("namespace:resource/name")
 	message := msg.Message{
 		TitleLink: "https://myvcslink/",
 		Title:     "The title of the message",
 		Body:      "this is the message body",
 		Event: fluxevent.Event{
-			ServiceIDs: []flux.ResourceID{
+			ServiceIDs: []resource.ID{
 				defaultResourceID,
 				nsResourceID,
 			},
@@ -127,13 +126,13 @@ func TestNewSlackMessage(t *testing.T) {
 }
 
 func TestSlackSend(t *testing.T) {
-	resourceID, _ := flux.ParseResourceID("namespace:resource/name")
+	resourceID, _ := resource.ParseID("namespace:resource/name")
 	message := msg.Message{
 		TitleLink: "https://myvcslink/",
 		Title:     "The title of the message",
 		Body:      "this is the message body",
 		Event: fluxevent.Event{
-			ServiceIDs: []flux.ResourceID{
+			ServiceIDs: []resource.ID{
 				resourceID,
 			},
 		},
@@ -155,10 +154,10 @@ func TestSlackSend(t *testing.T) {
 }
 
 func TestSlackSendNon200(t *testing.T) {
-	resourceID, _ := flux.ParseResourceID("namespace:resource/name")
+	resourceID, _ := resource.ParseID("namespace:resource/name")
 	message := msg.Message{
 		Event: fluxevent.Event{
-			ServiceIDs: []flux.ResourceID{
+			ServiceIDs: []resource.ID{
 				resourceID,
 			},
 		},
@@ -175,10 +174,10 @@ func TestSlackSendNon200(t *testing.T) {
 }
 
 func TestSlackSendHTTPError(t *testing.T) {
-	resourceID, _ := flux.ParseResourceID("namespace:resource/name")
+	resourceID, _ := resource.ParseID("namespace:resource/name")
 	message := msg.Message{
 		Event: fluxevent.Event{
-			ServiceIDs: []flux.ResourceID{
+			ServiceIDs: []resource.ID{
 				resourceID,
 			},
 		},
@@ -207,13 +206,13 @@ func TestSlackImplementsExporter(t *testing.T) {
 }
 
 func TestSlackSendAuthToken(t *testing.T) {
-	resourceID, _ := flux.ParseResourceID("namespace:resource/name")
+	resourceID, _ := resource.ParseID("namespace:resource/name")
 	message := msg.Message{
 		TitleLink: "https://myvcslink/",
 		Title:     "The title of the message",
 		Body:      "this is the message body",
 		Event: fluxevent.Event{
-			ServiceIDs: []flux.ResourceID{
+			ServiceIDs: []resource.ID{
 				resourceID,
 			},
 		},

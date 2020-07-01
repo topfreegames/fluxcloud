@@ -8,13 +8,12 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/weaveworks/flux"
-
-	"github.com/justinbarrick/fluxcloud/pkg/config"
-	"github.com/justinbarrick/fluxcloud/pkg/msg"
 	"github.com/stretchr/testify/assert"
+	"github.com/topfreegames/fluxcloud/pkg/config"
+	"github.com/topfreegames/fluxcloud/pkg/msg"
 
-	fluxevent "github.com/weaveworks/flux/event"
+	fluxevent "github.com/fluxcd/flux/pkg/event"
+	"github.com/fluxcd/flux/pkg/resource"
 	"github.com/zorkian/go-datadog-api"
 )
 
@@ -58,15 +57,15 @@ func TestDatadogFormatLink(t *testing.T) {
 }
 
 func TestNewDatadogMessage(t *testing.T) {
-	defaultResourceID, _ := flux.ParseResourceID("default:resource/name")
-	nsResourceID, _ := flux.ParseResourceID("namespace:resource/name")
+	defaultResourceID, _ := resource.ParseID("default:resource/name")
+	nsResourceID, _ := resource.ParseID("namespace:resource/name")
 	message := msg.Message{
 		TitleLink: "https://myvcslink/",
 		Title:     "The title of the message",
 		Body:      "this is the message body",
 		Event: fluxevent.Event{
 			Type: "sync",
-			ServiceIDs: []flux.ResourceID{
+			ServiceIDs: []resource.ID{
 				defaultResourceID,
 				nsResourceID,
 			},
@@ -78,14 +77,14 @@ func TestNewDatadogMessage(t *testing.T) {
 }
 
 func TestDatadogTags(t *testing.T) {
-	deployResourceID, _ := flux.ParseResourceID("ns1:deploy/name-1")
+	deployResourceID, _ := resource.ParseID("ns1:deploy/name-1")
 	message := msg.Message{
 		TitleLink: "https://myvcslink/",
 		Title:     "The title of the message",
 		Body:      "this is the message body",
 		Event: fluxevent.Event{
 			Type: "sync",
-			ServiceIDs: []flux.ResourceID{
+			ServiceIDs: []resource.ID{
 				deployResourceID,
 			},
 		},
@@ -95,14 +94,14 @@ func TestDatadogTags(t *testing.T) {
 }
 
 func TestDatadogSend(t *testing.T) {
-	resourceID, _ := flux.ParseResourceID("namespace:resource/name")
+	resourceID, _ := resource.ParseID("namespace:resource/name")
 	message := msg.Message{
 		TitleLink: "https://myvcslink/",
 		Title:     "The title of the message",
 		Body:      "this is the message body",
 		Event: fluxevent.Event{
 			Type: "sync",
-			ServiceIDs: []flux.ResourceID{
+			ServiceIDs: []resource.ID{
 				resourceID,
 			},
 		},
@@ -116,6 +115,8 @@ func TestDatadogSend(t *testing.T) {
 		fmt.Println(DatadogMessage)
 	}))
 	defer ts.Close()
+	// Add api data source
+	DatadogMessage.SourceType = "API"
 	testDatadog.datadogClient.SetBaseUrl(ts.URL)
 
 	err := testDatadog.Send(context.TODO(), &http.Client{}, message)
@@ -125,10 +126,10 @@ func TestDatadogSend(t *testing.T) {
 }
 
 func TestDatadogSendNon200(t *testing.T) {
-	resourceID, _ := flux.ParseResourceID("namespace:resource/name")
+	resourceID, _ := resource.ParseID("namespace:resource/name")
 	message := msg.Message{
 		Event: fluxevent.Event{
-			ServiceIDs: []flux.ResourceID{
+			ServiceIDs: []resource.ID{
 				resourceID,
 			},
 		},
@@ -145,11 +146,11 @@ func TestDatadogSendNon200(t *testing.T) {
 }
 
 func TestDatadogSendHTTPError(t *testing.T) {
-	resourceID, _ := flux.ParseResourceID("namespace:resource/name")
+	resourceID, _ := resource.ParseID("namespace:resource/name")
 	message := msg.Message{
 		Event: fluxevent.Event{
 			Type: "sync",
-			ServiceIDs: []flux.ResourceID{
+			ServiceIDs: []resource.ID{
 				resourceID,
 			},
 		},
