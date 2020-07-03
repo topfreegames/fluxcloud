@@ -1,11 +1,15 @@
 Fluxcloud is a tool to receive events from the [Weave flux](https://github.com/fluxcd/flux).
 
-![build status](https://ci.codesink.net/api/badges/justinbarrick/fluxcloud/status.svg)
+[![Actions Status](https://github.com/topfreegames/fluxcloud/workflows/Test/badge.svg)](https://github.com/topfreegames/fluxcloud/actions)
 
 Weave Flux is a useful tool for managing the state of your Kubernetes cluster.
 
 Fluxcloud is a valid upstream for Weave, allowing you to send Flux events to Slack or a
 webhook without using Weave Cloud.
+
+# Docker
+Images are available at [DockerHub](https://hub.docker.com/r/tfgco/fluxcloud) and [Quay](https://quay.io/repository/tfgco/fluxcloud)
+
 
 # Setup
 
