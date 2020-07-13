@@ -30,7 +30,7 @@ Set the following environment variables in your chosen deployment:
 * `SLACK_ICON_EMOJI`: the Slack emoji to use as the icon.
 * `SLACK_ICON_EMOJI`: the Slack emoji to use as the icon.
 * `DATADOG_API_KEY`: the Datadog API key used to push events.
-* `DATADOG_API_KEY`: the Datadog APP key used to push events.
+* `DATADOG_APP_KEY`: the Datadog APP key used to push events.
 * `DATADOG_ADITIONAL_TAGS`: Datadog aditional tags to be added to the generated event.
 * `MSTEAMS_URL`: the Microsoft Teams [webhook URL](https://docs.microsoft.com/en-us/outlook/actionable-messages/send-via-connectors#sending-actionable-messages-via-office-365-connectors) to use
 * `GITHUB_URL`: the URL to the Github repository that Flux uses, used for Slack links.
