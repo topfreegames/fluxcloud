@@ -1,0 +1,99 @@
+# Default values for fluxcloud.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: tfgco/fluxcloud
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext:
+  runAsUser: 999
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+config:
+
+  listenerPort: 3200
+
+  git:
+    url: # the URL to the Github repository that Flux uses, used for Slack links.
+
+  slack:
+    # the Slack webhook URL to use.
+    url: ""
+    # Name and key of the secret holding the slack webhook url
+    secret:
+      name: ""
+      key: ""
+    # the Slack channel to send messages to.
+    channel: ""
+    # the Slack username to use when sending messages.
+    username: ""
+    # legacy Slack API token to use.
+    token: ""
+    # the Slack emoji to use as the icon.
+    iconEmoji: ""
+
+  datadog: 
+    # the Datadog API key used to push events.
+    apiKey: ""
+    # the Datadog APP key used to push events.
+    appKey: ""
+    # Datadog aditional tags to be added to the generated event.
+    additionTags: ""
+
+  msTeams:
+    # the Microsoft Teams webhook URL to use
+    url:
+
+  webhook:
+    # if the exporter is "webhook", then the URL to use for the webhook.
+    url: ""
+  
+  # The types of exporter to use in comma delimited form. (Ex: slack,webhook) (Choices: slack, msteams, datadog, webhook, Default: slack)  
+  exporters: "slack" 
+
+  jaegerEndpoint: ""

@@ -1,0 +1,3 @@
+Fluxcloud successfully installed.
+
+Make sure you add the option `--connect ws://{{ include "fluxcloud.fullname" . }}` to flux and you should start receiving notification in your configured exporter(s).

@@ -1,0 +1,109 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "fluxcloud.fullname" . }}
+  labels:
+    {{- include "fluxcloud.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "fluxcloud.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "fluxcloud.selectorLabels" . | nindent 8 }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "fluxcloud.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: GITHUB_URL
+              value: {{ required "Required setting .Values.config.git.url not set" .Values.config.git.url }}
+            - name: SLACK_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default "fluxcloud" .Values.config.slack.secret.name }}
+                  key: {{ default "slack-webhook" .Values.config.slack.secret.key }}
+            - name: SLACK_CHANNEL
+              value: {{ required "Required setting .Values.config.slack.channel not set" .Values.config.slack.channel | quote }}
+            {{- with .Values.config.slack.username }}
+            - name: SLACK_USERNAME
+              value: {{ . }}
+            {{- end }}
+            {{- with .Values.config.slack.token }}
+            - name: SLACK_TOKEN
+              value: {{ . }}
+            {{- end }}
+            {{- with .Values.config.slack.iconEmoji }}
+            - name: SLACK_ICON_EMOJI
+              value: {{ . }}
+            {{- end }}
+            {{- with .Values.config.datadog.api }}
+            - name: DATADOG_API_KEY
+              value: {{ . }}
+            {{- end }}
+            {{- with .Values.config.datadog.app }}
+            - name: DATADOG_APP_KEY
+              value: {{ . }}
+            {{- end }}
+            {{- with .Values.config.datadog.additionalTags }}
+            - name: DATADOG_ADITIONAL_TAGS
+              value: {{ . }}
+            {{- end }}
+            {{- with .Values.config.msTeams.url }}
+            - name: MSTEAMS_URL
+              value: {{ . }}
+            {{- end }}
+            {{- with .Values.config.webhook.url }}
+            - name: WEBHOOK_URL
+              value: {{ . }}
+            {{- end }}
+            {{- with .Values.config.exporters }}
+            - name: EXPORTER_TYPE
+              value: {{ . }}
+            {{- end }}
+            {{- with .Values.config.jaegerEndpoint }}
+            - name: JAEGER_ENDPOINT
+              value: {{ . }}
+            {{- end }}
+            - name: LISTEN_ADDRESS
+              value: {{ printf ":%v" .Values.config.listenerPort | quote }}
+          ports:
+            - name: listener
+              containerPort: {{ .Values.config.listenerPort }}
+              protocol: TCP
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.config.listenerPort }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.config.listenerPort }}
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
