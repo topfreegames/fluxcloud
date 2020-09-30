@@ -62,12 +62,14 @@ config:
     url: # the URL to the Github repository that Flux uses, used for Slack links.
 
   slack:
-    # the Slack webhook URL to use.
-    url: ""
-    # Name and key of the secret holding the slack webhook url
-    secret:
-      name: ""
-      key: ""
+    enabled: true
+    hook:
+      # the Slack webhook URL to use.
+      url: ""
+      # Name and key of the secret holding the slack webhook url
+      secret:
+        name: ""
+        key: ""
     # the Slack channel to send messages to.
     channel: ""
     # the Slack username to use when sending messages.
@@ -77,21 +79,39 @@ config:
     # the Slack emoji to use as the icon.
     iconEmoji: ""
 
-  datadog: 
+  datadog:
+    enabled: false
     # the Datadog API key used to push events.
-    apiKey: ""
+    api:
+      key: ""
+      secret:
+        name: ""
+        key: ""
     # the Datadog APP key used to push events.
-    appKey: ""
+    app:
+      key: ""
+      secret:
+        name: ""
+        key: ""
     # Datadog aditional tags to be added to the generated event.
     additionTags: ""
 
   msTeams:
+    enabled: false
     # the Microsoft Teams webhook URL to use
-    url:
+    hook:
+      url: ""
+      secret:
+        name: ""
+        key: ""
 
   webhook:
+    enabled: false
     # if the exporter is "webhook", then the URL to use for the webhook.
     url: ""
+    secret:
+      name: ""
+      key: ""
   
   # The types of exporter to use in comma delimited form. (Ex: slack,webhook) (Choices: slack, msteams, datadog, webhook, Default: slack)  
   exporters: "slack" 

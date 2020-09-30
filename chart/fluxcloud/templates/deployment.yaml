@@ -30,11 +30,12 @@ spec:
           env:
             - name: GITHUB_URL
               value: {{ required "Required setting .Values.config.git.url not set" .Values.config.git.url }}
+            {{- if .Values.config.slack.enabled }}
             - name: SLACK_URL
               valueFrom:
                 secretKeyRef:
-                  name: {{ default "fluxcloud" .Values.config.slack.secret.name }}
-                  key: {{ default "slack-webhook" .Values.config.slack.secret.key }}
+                  name: {{ default (include "fluxcloud.fullname" .) .Values.config.slack.hook.secret.name }}
+                  key: {{ default "slack-webhook" .Values.config.slack.hook.secret.key }}
             - name: SLACK_CHANNEL
               value: {{ required "Required setting .Values.config.slack.channel not set" .Values.config.slack.channel | quote }}
             {{- with .Values.config.slack.username }}
@@ -49,25 +50,36 @@ spec:
             - name: SLACK_ICON_EMOJI
               value: {{ . }}
             {{- end }}
-            {{- with .Values.config.datadog.api }}
-            - name: DATADOG_API_KEY
-              value: {{ . }}
             {{- end }}
-            {{- with .Values.config.datadog.app }}
+            {{- if .Values.config.datadog.enabled }}
+            - name: DATADOG_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "fluxcloud.fullname" .) .Values.config.datadog.api.secret.name }}
+                  key: {{ default "datadog-apiKey" .Values.config.datadog.api.secret.key }}
             - name: DATADOG_APP_KEY
-              value: {{ . }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "fluxcloud.fullname" .) .Values.config.datadog.app.secret.name }}
+                  key: {{ default "datadog-appKey" .Values.config.datadog.app.secret.key }}
             {{- end }}
             {{- with .Values.config.datadog.additionalTags }}
             - name: DATADOG_ADITIONAL_TAGS
               value: {{ . }}
             {{- end }}
-            {{- with .Values.config.msTeams.url }}
+            {{- if .Values.config.msTeams.enabled }}
             - name: MSTEAMS_URL
-              value: {{ . }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "fluxcloud.fullname" .) .Values.config.msTeams.hook.name }}
+                  key: {{ default "msTeams-webhook" .Values.config.msTeams.hook.key }}
             {{- end }}
-            {{- with .Values.config.webhook.url }}
+            {{- if .Values.config.webhook.enabled }}
             - name: WEBHOOK_URL
-              value: {{ . }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "fluxcloud.fullname" .) .Values.config.webhook.secret.name }}
+                  key: {{ default "webhook-url" .Values.config.webhook.secret.key }}
             {{- end }}
             {{- with .Values.config.exporters }}
             - name: EXPORTER_TYPE
