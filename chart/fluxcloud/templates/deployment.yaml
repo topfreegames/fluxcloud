@@ -83,7 +83,7 @@ spec:
             {{- end }}
             {{- with .Values.config.exporters }}
             - name: EXPORTER_TYPE
-              value: {{ . }}
+              value: {{ join "," . }}
             {{- end }}
             {{- with .Values.config.jaegerEndpoint }}
             - name: JAEGER_ENDPOINT

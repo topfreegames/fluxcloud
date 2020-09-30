@@ -114,6 +114,7 @@ config:
       key: ""
   
   # The types of exporter to use in comma delimited form. (Ex: slack,webhook) (Choices: slack, msteams, datadog, webhook, Default: slack)  
-  exporters: "slack" 
+  exporters:
+    - "slack"
 
   jaegerEndpoint: ""
