@@ -1,3 +1,15 @@
+Release v0.5.0:
+
+deb6621 (fdpeiter): Merge pull request #14 from evq/change-chart-image-tag
+bce5d78 (eV): allow for changing the image tag used by the fluxcloud helm chart
+b865b75 (fdpeiter): Merge pull request #12 from B-Souty/add-helm-chart
+ce2c679 (fdpeiter): Merge pull request #13 from topfreegames/fix/arm-dockerfile
+3386f68 (B-Souty): Define exporters as list
+c5293ba (B-Souty): Define sensitive exporters info in secret
+ebe46a0 (fdpeiter): Update armv7.Dockerfile
+6114b56 (fdpeiter): Update arm64.Dockerfile
+d334ad6 (B-Souty): Create fluxcloud helm chart
+
 Release v0.4.0:
 
 e0ba5af (latchmihay): adding messages for GC delete events
