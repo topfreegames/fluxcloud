@@ -2,7 +2,9 @@ package formatters
 
 import (
 	"bytes"
+	"io/ioutil"
 	"log"
+	"os"
 	"strings"
 	"text/template"
 	"time"
@@ -16,6 +18,10 @@ import (
 )
 
 const (
+	bodyTemplateKey   = "body_template"
+	titleTemplateKey  = "title_template"
+	commitTemplateKey = "commit_template"
+
 	titleTemplate = `Applied flux changes to cluster`
 	bodyTemplate  = `
 Event: {{ .EventString }}
@@ -89,6 +95,9 @@ var (
 			}
 			return s
 		},
+		"getenv": func(key string) string {
+			return os.Getenv(key)
+		},
 	}
 )
 
@@ -99,9 +108,9 @@ func NewDefaultFormatter(config config.Config) (*DefaultFormatter, error) {
 		return nil, err
 	}
 
-	bodyTemplate := config.Optional("body_template", bodyTemplate)
-	titleTemplate := config.Optional("title_template", titleTemplate)
-	commitTemplate := config.Optional("commit_template", commitTemplate)
+	bodyTemplate := config.Optional(bodyTemplateKey, bodyTemplate)
+	titleTemplate := config.Optional(titleTemplateKey, titleTemplate)
+	commitTemplate := config.Optional(commitTemplateKey, commitTemplate)
 
 	if err := checkTemplate(bodyTemplate); err != nil {
 		log.Println(bodyTemplate)
@@ -249,4 +258,19 @@ func getErrors(meta fluxevent.EventMetadata) []fluxevent.ResourceError {
 	default:
 		return []fluxevent.ResourceError{}
 	}
+}
+
+// ReadTemplates reads the body, title and commit templates from files.
+func ReadTemplates() map[string]string {
+	m := make(map[string]string)
+	for key, path := range map[string]string{
+		bodyTemplateKey:   "templates/body.tmpl",
+		titleTemplateKey:  "templates/title.tmpl",
+		commitTemplateKey: "templates/commit.tmpl",
+	} {
+		if tpl, err := ioutil.ReadFile(path); err == nil {
+			m[key] = string(tpl)
+		}
+	}
+	return m
 }
