@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	titleTemplate = `Applied flux changes to cluster`
+	titleTemplate = `Applied flux changes to cluster{{ if (gt (len .Cluster) 0) }} {{ .Cluster }}{{ end }}`
 	bodyTemplate  = `
 Event: {{ .EventString }}
 {{ if and (ne .EventType "commit") (gt (len .Commits) 0) }}Commits:
@@ -44,9 +44,11 @@ type DefaultFormatter struct {
 	bodyTemplate   string
 	titleTemplate  string
 	commitTemplate string
+	cluster        string
 }
 
 type tplValues struct {
+	Cluster            string
 	VCSLink            string
 	EventID            fluxevent.EventID
 	EventServiceIDs    []resource.ID
@@ -102,6 +104,7 @@ func NewDefaultFormatter(config config.Config) (*DefaultFormatter, error) {
 	bodyTemplate := config.Optional("body_template", bodyTemplate)
 	titleTemplate := config.Optional("title_template", titleTemplate)
 	commitTemplate := config.Optional("commit_template", commitTemplate)
+	cluster := config.Optional("cluster", "")
 
 	if err := checkTemplate(bodyTemplate); err != nil {
 		log.Println(bodyTemplate)
@@ -124,12 +127,14 @@ func NewDefaultFormatter(config config.Config) (*DefaultFormatter, error) {
 		bodyTemplate:   bodyTemplate,
 		titleTemplate:  titleTemplate,
 		commitTemplate: commitTemplate,
+		cluster:        cluster,
 	}, nil
 }
 
 // Format plaintext message for an exporter for Flux event
 func (d DefaultFormatter) FormatEvent(event fluxevent.Event, exporter exporters.Exporter) msg.Message {
 	values := &tplValues{
+		Cluster:            d.cluster,
 		VCSLink:            d.vcsLink,
 		EventID:            event.ID,
 		EventServiceIDs:    event.ServiceIDs,
