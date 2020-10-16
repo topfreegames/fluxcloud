@@ -70,14 +70,13 @@ func TestDefaultFormatterFormatSyncEvent(t *testing.T) {
 		bodyTemplate:   bodyTemplate,
 		titleTemplate:  titleTemplate,
 		commitTemplate: commitTemplate,
-		cluster:        "cluster-name",
 	}
 
 	event := test_utils.NewFluxSyncEvent()
 
 	msg := d.FormatEvent(event, &exporters.FakeExporter{})
 	assert.Equal(t, "https://github.com/commit/810c2e6f22ac5ab7c831fe0dd697fe32997b098f", msg.TitleLink)
-	assert.Equal(t, "Applied flux changes to cluster cluster-name", msg.Title)
+	assert.Equal(t, "Applied flux changes to cluster", msg.Title)
 	assert.Equal(t, fluxevent.EventSync, msg.Type)
 	assert.Equal(t, `Event: Sync: 810c2e6, default:deployment/test
 Commits:
@@ -96,13 +95,12 @@ func TestDefaultFormatterFormatDeleteSyncEvent(t *testing.T) {
 		bodyTemplate:   bodyTemplate,
 		titleTemplate:  titleTemplate,
 		commitTemplate: commitTemplate,
-		cluster:        "cluster-name",
 	}
 
 	event := test_utils.NewFluxDeleteEvent()
 	msg := d.FormatEvent(event, &exporters.FakeExporter{})
 	assert.Equal(t, "https://github.com/commit/c6b7c44b4300f92b788bbc9bb6cb7282852300b4", msg.TitleLink)
-	assert.Equal(t, "Applied flux changes to cluster cluster-name", msg.Title)
+	assert.Equal(t, "Applied flux changes to cluster", msg.Title)
 	assert.Equal(t, fluxevent.EventSync, msg.Type)
 	assert.Equal(t, `Event: Sync: c6b7c44, no workloads changed
 Commits:
@@ -117,11 +115,10 @@ func TestDefaultFormatterFormatCommitEvent(t *testing.T) {
 		bodyTemplate:   bodyTemplate,
 		titleTemplate:  titleTemplate,
 		commitTemplate: commitTemplate,
-		cluster:        "cluster-name",
 	}
 	msg := d.FormatEvent(test_utils.NewFluxCommitEvent(), &exporters.FakeExporter{})
 	assert.Equal(t, "https://github.com/commit/d644e1a05db6881abf0cdb78299917b95f442036", msg.TitleLink)
-	assert.Equal(t, "Applied flux changes to cluster cluster-name", msg.Title)
+	assert.Equal(t, "Applied flux changes to cluster", msg.Title)
 	assert.Equal(t, fluxevent.EventCommit, msg.Type)
 	assert.Equal(t, `Event: Commit: d644e1a, default:deployment/test
 
