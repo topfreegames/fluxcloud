@@ -27,8 +27,6 @@ Set the following environment variables in your chosen deployment:
 * `SLACK_TOKEN` (optional): legacy Slack API token to use.
 * `SLACK_CHANNEL`: the Slack channel to send messages to.
 * `SLACK_ICON_EMOJI`: the Slack emoji to use as the icon.
-* `SLACK_ICON_EMOJI`: the Slack emoji to use as the icon.
-* `SLACK_ICON_EMOJI`: the Slack emoji to use as the icon.
 * `DATADOG_API_KEY`: the Datadog API key used to push events.
 * `DATADOG_APP_KEY`: the Datadog APP key used to push events.
 * `DATADOG_ADITIONAL_TAGS`: Datadog aditional tags to be added to the generated event.
