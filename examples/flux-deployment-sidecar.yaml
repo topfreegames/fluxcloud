@@ -1,3 +1,30 @@
+# Uncomment if you want to change the template messages.
+# ---
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: fluxcloud-templates
+# data:
+#   title.tmpl: |
+#     Applied flux changes to cluster {{ getenv "CLUSTER" }}
+#   body.tmpl: |
+#     Event: {{ .EventString }}
+#     {{ if and (ne .EventType "commit") (gt (len .Commits) 0) }}Commits:
+#     {{ range .Commits }}
+#     * {{ call $.FormatLink (print $.VCSLink "/commit/" .Revision) (truncate .Revision 7) }}: {{ .Message }}
+#     {{end}}{{end}}
+#     {{ if (gt (len .EventServiceIDs) 0) }}Resources updated:
+#     {{ range .EventServiceIDs }}
+#     * {{ . }}
+#     {{ end }}{{ end }}
+#     {{ if gt (len .Errors) 0 }}Errors:
+#     {{ range .Errors }}
+#     Resource {{ .ID }}, file: {{ .Path }}:
+#     
+#     > {{ .Error }}
+#     {{ end }}{{ end }}
+#   commit.tmpl: |
+#     {{ .VCSLink }}/commit/{{ .Commit }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -90,3 +117,11 @@ spec:
           value: "https://github.com/topfreegames/fluxcloud/"
         - name: LISTEN_ADDRESS
           value: ":3032"
+      # Uncomment if you want to change the template messages.
+      #   volumeMounts:
+      #   - name: templates-volume
+      #     mountPath: /app/templates
+      # volumes:
+      # - name: templates-volume
+      #   configMap:
+      #     name: fluxcloud-templates
