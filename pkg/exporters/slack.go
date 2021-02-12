@@ -71,6 +71,7 @@ func NewSlack(config config.Config) (*Slack, error) {
 
 // Send a SlackMessage to Slack
 func (s *Slack) Send(c context.Context, client *http.Client, message msg.Message) error {
+	log.Print("Sending to exporter: ", s.Name())
 	for _, slackMessage := range s.NewSlackMessage(message) {
 		fmt.Println(slackMessage)
 		b := new(bytes.Buffer)

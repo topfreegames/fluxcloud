@@ -67,6 +67,7 @@ func (d *Datadog) NewDatadogEvent(message msg.Message) []DatadogEvent {
 
 // Send uses the datadog api client to post the event
 func (d *Datadog) Send(c context.Context, client *http.Client, message msg.Message) error {
+	log.Print("Sending to exporter: ", d.Name())
 	for _, event := range d.NewDatadogEvent(message) {
 		_, err := d.datadogClient.PostEvent(&datadog.Event{Title: &event.Title,
 			Text:       &event.Text,

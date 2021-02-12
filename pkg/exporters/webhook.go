@@ -33,6 +33,7 @@ func NewWebhook(config config.Config) (*Webhook, error) {
 
 // Send a WebhookMessage to Webhook
 func (s *Webhook) Send(c context.Context, client *http.Client, message msg.Message) error {
+	log.Print("Sending to exporter: ", s.Name())
 	b := new(bytes.Buffer)
 	err := json.NewEncoder(b).Encode(message)
 	if err != nil {
