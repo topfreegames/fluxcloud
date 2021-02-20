@@ -81,6 +81,23 @@ spec:
                   name: {{ default (include "fluxcloud.fullname" .) .Values.config.webhook.secret.name }}
                   key: {{ default "webhook-url" .Values.config.webhook.secret.key }}
             {{- end }}
+            {{- if .Values.config.mattermost.enabled }}
+            - name: MATTERMOST_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "fluxcloud.fullname" .) .Values.config.mattermost.hook.secret.name }}
+                  key: {{ default "mattermost-webhook" .Values.config.mattermost.hook.secret.key }}
+            - name: MATTERMOST_CHANNEL
+              value: {{ required "Required setting .Values.config.mattermost.channel not set" .Values.config.mattermost.channel | quote }}
+            {{- with .Values.config.mattermost.username }}
+            - name: MATTERMOST_USERNAME
+              value: {{ . }}
+            {{- end }}
+            {{- with .Values.config.mattermost.iconURL }}
+            - name: MATTERMOST_ICON_URL
+              value: {{ . }}
+            {{- end }}
+            {{- end }}
             {{- with .Values.config.exporters }}
             - name: EXPORTER_TYPE
               value: {{ join "," . }}

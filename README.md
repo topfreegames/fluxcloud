@@ -27,6 +27,10 @@ Set the following environment variables in your chosen deployment:
 * `SLACK_TOKEN` (optional): legacy Slack API token to use.
 * `SLACK_CHANNEL`: the Slack channel to send messages to.
 * `SLACK_ICON_EMOJI`: the Slack emoji to use as the icon.
+* `MATTERMOST_URL`: the Mattermost [webhook URL](https://docs.mattermost.com/developer/webhooks-incoming.html) to use.
+* `MATTERMOST_USERNAME`: the Mattermost username to use when sending messages.
+* `MATTERMOST_CHANNEL`: the Mattermost channel to send messages to.
+* `MATTERMOST_ICON_URL`: the Mattermost Icon URL to use as the icon.
 * `DATADOG_API_KEY`: the Datadog API key used to push events.
 * `DATADOG_APP_KEY`: the Datadog APP key used to push events.
 * `DATADOG_ADITIONAL_TAGS`: Datadog aditional tags to be added to the generated event.
@@ -115,6 +119,12 @@ events from namespace `team-b` to `#teamb` you would set the following string:
 
 Set the environment variable `MSTEAMS_URL` to the URL generated on activation of an
 Incoming Webhook in a Microsoft Teams channel.
+
+## Mattermost
+
+To use the Mattermost exporter, set the `MATTERMOST_URL`,
+`MATTERMOST_USERNAME`, and `MATTERMOST_CHANNEL` environment variables to
+use. You can also optionally set the `EXPORTER_TYPE` to "mattermost".
 
 ## Datadog
 
