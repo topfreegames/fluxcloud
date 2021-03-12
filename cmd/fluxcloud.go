@@ -54,6 +54,13 @@ func initExporter(config config.Config) (exporter []exporters.Exporter) {
 			}
 			exporter = append(exporter, dd)
 		}
+		if v == "mattermost" {
+			mattermost, err := exporters.NewMattermost(config)
+			if err != nil {
+				log.Fatal(err)
+			}
+			exporter = append(exporter, mattermost)
+		}
 	}
 
 	for _, e := range exporter {
@@ -66,16 +73,18 @@ func initExporter(config config.Config) (exporter []exporters.Exporter) {
 func main() {
 	log.SetFlags(0)
 
-	config := &config.DefaultConfig{}
+	cfg := &config.DefaultConfig{}
 
-	formatter, err := formatters.NewDefaultFormatter(config)
+	fmtTemplates := formatters.ReadTemplates()
+	fmtCfg := config.NewChain(config.MapConfig(fmtTemplates), cfg)
+	formatter, err := formatters.NewDefaultFormatter(fmtCfg)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	apiConfig := apis.NewAPIConfig(formatter, initExporter(config), config)
+	apiConfig := apis.NewAPIConfig(formatter, initExporter(cfg), cfg)
 
 	apis.HandleWebsocket(apiConfig)
 	apis.HandleV6(apiConfig)
-	log.Fatal(apiConfig.Listen(config.Optional("listen_address", ":3031")))
+	log.Fatal(apiConfig.Listen(cfg.Optional("listen_address", ":3031")))
 }

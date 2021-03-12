@@ -61,7 +61,7 @@ config:
   listenerPort: 3200
 
   git:
-    url: # the URL to the Github repository that Flux uses, used for Slack links.
+    url: test.com # the URL to the Github repository that Flux uses, used for Slack links.
 
   slack:
     enabled: true
@@ -73,7 +73,7 @@ config:
         name: ""
         key: ""
     # the Slack channel to send messages to.
-    channel: ""
+    channel: "test"
     # the Slack username to use when sending messages.
     username: ""
     # legacy Slack API token to use.
@@ -114,8 +114,24 @@ config:
     secret:
       name: ""
       key: ""
-  
-  # The types of exporter to use in comma delimited form. (Ex: slack,webhook) (Choices: slack, msteams, datadog, webhook, Default: slack)  
+
+  mattermost:
+    enabled: true
+    hook:
+      # the Mattermost webhook URL to use.
+      url: ""
+      # Name and key of the secret holding the Mattermost webhook url
+      secret:
+        name: ""
+        key: ""
+    # the Mattermost channel to send messages to.
+    channel: ""
+    # the Mattermost username to use when sending messages.
+    username: ""
+    # the icon to use as the Mattermost icon.
+    iconURL: ""
+
+  # The types of exporter to use in comma delimited form. (Ex: slack,webhook) (Choices: slack, msteams, datadog, webhook, mattermost, Default: slack)
   exporters:
     - "slack"
 

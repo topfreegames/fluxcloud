@@ -1,6 +1,8 @@
 package formatters
 
 import (
+	"io/ioutil"
+	"os"
 	"testing"
 
 	fluxevent "github.com/fluxcd/flux/pkg/event"
@@ -233,4 +235,58 @@ Resource default:persistentvolumeclaim/lol, file: manifests/lol.yaml:
 
 > running kubectl: The PersistentVolumeClaim "lol" is invalid: spec: Forbidden: field is immutable after creation`, msg.Body)
 	assert.Equal(t, event, msg.Event)
+}
+
+func TestTemplateGetenv(t *testing.T) {
+	os.Setenv("CLUSTER", "Production-US")
+	titleTemplate := `Applied flux changes to cluster {{ getenv "CLUSTER" }}`
+	d := DefaultFormatter{
+		vcsLink:        "https://github.com",
+		bodyTemplate:   bodyTemplate,
+		titleTemplate:  titleTemplate,
+		commitTemplate: commitTemplate,
+	}
+	msg := d.FormatEvent(test_utils.NewFluxAutoReleaseEvent(), &exporters.FakeExporter{})
+	assert.Equal(t, "Applied flux changes to cluster Production-US", msg.Title)
+	assert.Equal(t, fluxevent.EventAutoRelease, msg.Type)
+	os.Setenv("CLUSTER", "")
+}
+
+func TestReadTemplates(t *testing.T) {
+	for name, test := range map[string]struct {
+		pathToContent map[string]string
+		output        map[string]string
+	}{
+		"all-templates": {
+			pathToContent: map[string]string{
+				"templates/body.tmpl":   "body template",
+				"templates/title.tmpl":  "title template",
+				"templates/commit.tmpl": "commit template",
+			},
+			output: map[string]string{
+				"body_template":   "body template",
+				"title_template":  "title template",
+				"commit_template": "commit template",
+			},
+		},
+		"one-template": {
+			pathToContent: map[string]string{
+				"templates/body.tmpl": "body template",
+			},
+			output: map[string]string{
+				"body_template": "body template",
+			},
+		},
+	} {
+		t.Run(name, func(t *testing.T) {
+			os.Mkdir("templates", 0755)
+			for path, content := range test.pathToContent {
+				err := ioutil.WriteFile(path, []byte(content), 0644)
+				assert.NoError(t, err)
+			}
+			output := ReadTemplates()
+			assert.Equal(t, test.output, output)
+			os.RemoveAll("templates")
+		})
+	}
 }
