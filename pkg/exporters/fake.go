@@ -3,6 +3,7 @@ package exporters
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/topfreegames/fluxcloud/pkg/msg"
@@ -13,6 +14,7 @@ type FakeExporter struct {
 }
 
 func (f *FakeExporter) Send(_ context.Context, _ *http.Client, message msg.Message) error {
+	log.Print("Sending to exporter: ", f.Name())
 	f.Sent = append(f.Sent, message)
 	return nil
 }

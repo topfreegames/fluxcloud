@@ -55,6 +55,7 @@ func NewMSTeams(config config.Config) (*MSTeams, error) {
 
 // Send a MSTeamsMessage to MS Teams
 func (s *MSTeams) Send(ctx context.Context, client *http.Client, message msg.Message) error {
+	log.Print("Sending to exporter: ", s.Name())
 	msTeamsMessage := s.NewMSTeamsMessage(message)
 	fmt.Println(msTeamsMessage)
 	b := new(bytes.Buffer)

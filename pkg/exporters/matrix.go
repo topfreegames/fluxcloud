@@ -79,6 +79,7 @@ func (s *Matrix) GetUrl() (string, error) {
 
 // Send a Message to Matrix
 func (s *Matrix) Send(c context.Context, client *http.Client, message msg.Message) error {
+	log.Print("Sending to exporter: ", s.Name())
 	b := new(bytes.Buffer)
 
 	body := fmt.Sprintf("<a href='%s'>%s</a><br>%s", message.TitleLink, message.Title, message.Body)
