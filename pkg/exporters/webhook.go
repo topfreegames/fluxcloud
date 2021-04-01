@@ -29,9 +29,6 @@ func NewWebhook(config config.Config) (*Webhook, error) {
 		return nil, err
 	}
 	s.Timeout = config.Optional("Webhook_timeout", "120s")
-	if err != nil {
-		return nil, err
-	}
 
 	return &s, nil
 }
