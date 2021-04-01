@@ -37,6 +37,7 @@ Set the following environment variables in your chosen deployment:
 * `MSTEAMS_URL`: the Microsoft Teams [webhook URL](https://docs.microsoft.com/en-us/outlook/actionable-messages/send-via-connectors#sending-actionable-messages-via-office-365-connectors) to use
 * `GITHUB_URL`: the URL to the Github repository that Flux uses, used for Slack links.
 * `WEBHOOK_URL`: if the exporter is "webhook", then the URL to use for the webhook.
+* `WEBHOOK_TIMEOUT`: if the exporter is "webhook", the HTTP Client timeout (expressed in duration format) example: 30s | 2m | 1h
 * `EXPORTER_TYPE` (optional): The types of exporter to use in comma delimited form. (Ex: `slack,webhook`) (Choices: slack, msteams, datadog, webhook, Default: slack)
 * `JAEGER_ENDPOINT` (optional): endpoint to report Jaeger traces to.
 

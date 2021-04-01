@@ -16,17 +16,18 @@ import (
 func TestWebhookDefault(t *testing.T) {
 	config := config.NewFakeConfig()
 	config.Set("webhook_url", "https://mywebhook/")
-
+	config.Set("webhook_timeout", "10m")
 	webhook, err := NewWebhook(config)
 	assert.Nil(t, err)
 
 	assert.Equal(t, "https://mywebhook/", webhook.Url)
+	assert.Equal(t, "10m", webhook.Timeout)
 }
 
 func TestWehookMissingURL(t *testing.T) {
 	config := config.NewFakeConfig()
 
-	_, err := NewSlack(config)
+	_, err := NewWebhook(config)
 	assert.NotNil(t, err)
 }
 
@@ -41,7 +42,11 @@ func TestWebhookFormatLink(t *testing.T) {
 }
 
 func TestWebhookSend(t *testing.T) {
-	webhook := Webhook{}
+	cfg := config.NewFakeConfig()
+	cfg.Set("webhook_url", "https://mywebhook/")
+
+	webhook, err := NewWebhook(cfg)
+	assert.NoError(t, err)
 
 	message := msg.Message{
 		TitleLink: "https://myvcslink/",
@@ -59,13 +64,18 @@ func TestWebhookSend(t *testing.T) {
 
 	webhook.Url = ts.URL
 
-	err := webhook.Send(context.TODO(), &http.Client{}, message)
+	err = webhook.Send(context.TODO(), &http.Client{}, message)
 	assert.Nil(t, err)
 	assert.Equal(t, receivedMessage, message)
 }
 
 func TestWebhookSendNon200(t *testing.T) {
-	webhook := Webhook{}
+	cfg := config.NewFakeConfig()
+	cfg.Set("webhook_url", "https://mywebhook/")
+
+	webhook, err := NewWebhook(cfg)
+	assert.NoError(t, err)
+
 	message := msg.Message{}
 
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -75,12 +85,17 @@ func TestWebhookSendNon200(t *testing.T) {
 
 	webhook.Url = ts.URL
 
-	err := webhook.Send(context.TODO(), &http.Client{}, message)
+	err = webhook.Send(context.TODO(), &http.Client{}, message)
 	assert.NotNil(t, err)
 }
 
 func TestWebhookSendHTTPError(t *testing.T) {
-	webhook := Webhook{}
+	cfg := config.NewFakeConfig()
+	cfg.Set("webhook_url", "https://mywebhook/")
+
+	webhook, err := NewWebhook(cfg)
+	assert.NoError(t, err)
+
 	message := msg.Message{}
 
 	var ts *httptest.Server
@@ -91,7 +106,7 @@ func TestWebhookSendHTTPError(t *testing.T) {
 
 	webhook.Url = ts.URL
 
-	err := webhook.Send(context.TODO(), &http.Client{}, message)
+	err = webhook.Send(context.TODO(), &http.Client{}, message)
 	assert.NotNil(t, err)
 }
 

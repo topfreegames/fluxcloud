@@ -6,16 +6,17 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
-	"net/http"
-
 	"github.com/topfreegames/fluxcloud/pkg/config"
 	"github.com/topfreegames/fluxcloud/pkg/msg"
+	"log"
+	"net/http"
+	"time"
 )
 
 // The Webhook exporter sends Flux events to a Webhook channel via a webhook.
 type Webhook struct {
-	Url string
+	Url     string
+	Timeout string
 }
 
 // Initialize a new Webhook instance
@@ -27,6 +28,10 @@ func NewWebhook(config config.Config) (*Webhook, error) {
 	if err != nil {
 		return nil, err
 	}
+	s.Timeout = config.Optional("Webhook_timeout", "120s")
+	if err != nil {
+		return nil, err
+	}
 
 	return &s, nil
 }
@@ -34,14 +39,21 @@ func NewWebhook(config config.Config) (*Webhook, error) {
 // Send a WebhookMessage to Webhook
 func (s *Webhook) Send(c context.Context, client *http.Client, message msg.Message) error {
 	log.Print("Sending to exporter: ", s.Name())
+
+	timeout, err := time.ParseDuration(s.Timeout)
+	if err != nil {
+		return err
+	}
+	client.Timeout = timeout
+
 	b := new(bytes.Buffer)
-	err := json.NewEncoder(b).Encode(message)
+	err = json.NewEncoder(b).Encode(message)
 	if err != nil {
 		log.Print("Could encode message to Webhook:", err)
 		return err
 	}
 
-	log.Print(string(b.Bytes()))
+	log.Print("Payload: ", string(b.Bytes()))
 
 	req, _ := http.NewRequest("POST", s.Url, b)
 	req.Header.Set("Content-Type", "application/json")
