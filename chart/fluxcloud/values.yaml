@@ -116,7 +116,7 @@ config:
       key: ""
 
   mattermost:
-    enabled: true
+    enabled: false
     hook:
       # the Mattermost webhook URL to use.
       url: ""
